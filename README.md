@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Stock Analytics Dashboard - Frontend
 
-## Getting Started
+A production-grade Next.js stock analytics dashboard that connects to a Node.js backend API with Marketstack integration.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Dashboard**: View top gainers and losers in the market
+- **Stock Search**: Search for stocks with debounced input (300ms)
+- **Stock Details**: View current price, OHLC data, volume, and moving averages
+- **Charts**: Interactive price charts with Recharts (7D/1M/3M/1Y time ranges)
+- **Watchlist**: Persisted to localStorage, add/remove stocks
+- **Dark Theme**: Fintech-style UI with slate color palette
+- **Responsive**: Works on mobile, tablet, and desktop
+
+## Tech Stack
+
+- Next.js 16 (App Router)
+- TypeScript
+- Tailwind CSS
+- Axios (HTTP client)
+- Recharts (Charts)
+- Zustand (State management)
+- TanStack Query (React Query)
+- Lucide React (Icons)
+
+## Project Structure
+
+```
+frontend/
+├── src/
+│   ├── app/
+│   │   ├── dashboard/        # Dashboard page
+│   │   ├── stocks/[symbol]/  # Stock detail page
+│   │   ├── watchlist/        # Watchlist page
+│   │   ├── layout.tsx        # Root layout
+│   │   ├── page.tsx          # Home (redirects to dashboard)
+│   │   └── globals.css       # Global styles
+│   ├── components/           # Reusable components
+│   │   ├── Navbar.tsx
+│   │   ├── SearchBar.tsx
+│   │   ├── StockCard.tsx
+│   │   ├── ChartCard.tsx
+│   │   ├── Loader.tsx
+│   │   └── Providers.tsx
+│   ├── hooks/                # Custom hooks
+│   │   └── useStockData.ts   # React Query hooks + utilities
+│   ├── services/             # API services
+│   │   └── api.ts            # Axios API client
+│   ├── store/                # Zustand stores
+│   │   └── stockStore.ts
+│   └── utils/                # Utility functions
+├── .env.local                # Environment variables
+├── SPEC.md                   # Project specification
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Install dependencies**:
+   ```bash
+   cd frontend
+   npm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Configure environment**:
+   Create `.env.local`:
+   ```
+   NEXT_PUBLIC_API_URL=http://localhost:5000
+   ```
 
-## Learn More
+3. **Start the backend**:
+   See backend README for instructions.
 
-To learn more about Next.js, take a look at the following resources:
+4. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. **Open**: http://localhost:3000
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Available Scripts
 
-## Deploy on Vercel
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## API Endpoints
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/stocks/:symbol` | Get single stock data |
+| `GET /api/stocks/:symbol/history?from=...&to=...` | Get historical data |
+| `GET /api/stocks/top-movers?symbols=...` | Get top gainers/losers |
+| `GET /api/stocks/:symbol/moving-average?days=20` | Get moving average |
+
+## Pages
+
+| Route | Description |
+|-------|-------------|
+| `/` | Redirects to `/dashboard` |
+| `/dashboard` | Market overview with top movers |
+| `/stocks/:symbol` | Stock detail with chart |
+| `/watchlist` | User's watchlist |
+
+## Design System
+
+- **Colors**: Slate palette (slate-900 primary background)
+- **Typography**: Inter (sans), JetBrains Mono (numbers)
+- **Accents**: Blue-500 primary, Green/Red for positive/negative changes
+- **Border radius**: 8px cards, 6px buttons, 4px inputs
+- **Animations**: 200ms transitions, hover effects
